@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # ./rails_refactor.rb rename DummyController HelloController 
-command, from, to = ARGV
+# ./rails_refactor.rb rename DummyController.my_action new_action
+
 require 'config/environment'
 
 def replace_in_file(path, find, replace)
@@ -30,34 +31,62 @@ def controller_rename(from, to)
   replace_in_file('config/routes.rb', from_resource_path, to_resource_path)
 end
 
-require 'test/unit'
-class RailsRefactorTest < Test::Unit::TestCase
-
-  def setup
-    `git checkout .`
-    `rm -rf app/views/hello_world`
-  end
-
-  def test_controller_rename
-    controller_rename("DummiesController", "HelloWorldController")
-    assert File.exist?("app/controllers/hello_world_controller.rb")
-    assert !File.exist?("app/controllers/dummies_controller.rb")
-
-    assert File.exist?("app/views/hello_world/index.html.erb")
-    assert !File.exist?("app/views/dummies/index.html.erb")
-
-    controller_contents = File.read("app/controllers/hello_world_controller.rb")
-    assert controller_contents.include?("HelloWorldController") 
-    assert !controller_contents.include?("DummiesController") 
-
-    routes_contents = File.read("config/routes.rb")
-    assert routes_contents.include?("hello_world") 
-    assert !routes_contents.include?("dummies") 
-
-    helper_contents = File.read("app/helpers/hello_world_helper.rb")
-    assert helper_contents.include?("HelloWorldHelper") 
-    assert !helper_contents.include?("DummiesHelper") 
-
-  end
+def controller_action_rename(from, to)
+  controller, action = from.split('.')
+  controller_path = "app/controllers/#{controller.underscore}.rb"
+  p controller_path
+  replace_in_file(controller_path, action, to)
 end
 
+if ARGV.length == 3
+  command, from, to = ARGV
+  if command == "rename"
+    if from.include? '.'
+      controller_action_rename(from, to)
+    else
+      controller_rename(from, to)
+    end
+  end
+else
+  require 'test/unit'
+  class RailsRefactorTest < Test::Unit::TestCase
+
+    def setup
+      `git checkout .`
+      `rm -rf app/views/hello_world`
+    end
+
+    def assert_file_changed(path, from, to)
+      contents = File.read(path)
+      assert contents.include?(to) 
+      assert !contents.include?(from) 
+    end
+
+    def test_controller_action_rename
+      controller_action_rename('DummiesController.index', 'new_action')
+      assert_file_changed("app/controllers/dummies_controller.rb", "index", "new_action")
+    end
+
+    def test_controller_rename
+      controller_rename("DummiesController", "HelloWorldController")
+      assert File.exist?("app/controllers/hello_world_controller.rb")
+      assert !File.exist?("app/controllers/dummies_controller.rb")
+
+      assert File.exist?("app/views/hello_world/index.html.erb")
+      assert !File.exist?("app/views/dummies/index.html.erb")
+
+      controller_contents = File.read("app/controllers/hello_world_controller.rb")
+      assert controller_contents.include?("HelloWorldController") 
+      assert !controller_contents.include?("DummiesController") 
+
+      routes_contents = File.read("config/routes.rb")
+      assert routes_contents.include?("hello_world") 
+      assert !routes_contents.include?("dummies") 
+
+      helper_contents = File.read("app/helpers/hello_world_helper.rb")
+      assert helper_contents.include?("HelloWorldHelper") 
+      assert !helper_contents.include?("DummiesHelper") 
+
+    end
+  end
+end
