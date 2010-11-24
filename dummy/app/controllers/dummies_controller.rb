@@ -1,0 +1,2 @@
+class DummiesController < ApplicationController
+end
