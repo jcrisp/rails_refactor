@@ -63,7 +63,7 @@ if ARGV.length == 3
     if from.include? '.'
       renamer.controller_action_rename 
     else
-      rename.controller_rename
+      renamer.controller_rename
     end
   end
 else
