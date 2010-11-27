@@ -9,13 +9,8 @@ class Renamer
     @from, @to = from, to
 
     @from_controller, @from_action = from.split(".")
-
     @from_resource_name = @from_controller.gsub(/Controller$/, "")
-    @to_resource_name   = to.gsub(/Controller$/, "")
-
     @from_resource_path = @from_resource_name.underscore
-
-    @to_resource_path   = @to_resource_name.underscore
   end
 
   def replace_in_file(path, find, replace)
@@ -25,27 +20,28 @@ class Renamer
   end
 
   def controller_rename
-    @to_controller_path = "app/controllers/#{@to.underscore}.rb"
+    to_controller_path = "app/controllers/#{@to.underscore}.rb"
+    to_resource_name   = @to.gsub(/Controller$/, "")
+    to_resource_path   = to_resource_name.underscore
 
-    `mv app/controllers/#{@from.underscore}.rb #{@to_controller_path}`
-    replace_in_file(@to_controller_path, @from, @to)
+    `mv app/controllers/#{@from.underscore}.rb #{to_controller_path}`
+    replace_in_file(to_controller_path, @from, @to)
 
-    `mv app/views/#{@from_resource_path} app/views/#{@to_resource_path}`
+    `mv app/views/#{@from_resource_path} app/views/#{to_resource_path}`
 
-    @to_helper_path = "app/helpers/#{@to_resource_path}_helper.rb"
-    `mv app/helpers/#{@from_resource_path}_helper.rb #{@to_helper_path}`
+    to_helper_path = "app/helpers/#{to_resource_path}_helper.rb"
+    `mv app/helpers/#{@from_resource_path}_helper.rb #{to_helper_path}`
 
-    replace_in_file(@to_helper_path, @from_resource_name, @to_resource_name)
+    replace_in_file(to_helper_path, @from_resource_name, to_resource_name)
 
-    replace_in_file('config/routes.rb', @from_resource_path, @to_resource_path)
+    replace_in_file('config/routes.rb', @from_resource_path, to_resource_path)
   end
 
   def controller_action_rename
-    controller, action = @from.split('.')
-    controller_path = "app/controllers/#{controller.underscore}.rb"
-    replace_in_file(controller_path, action, @to)
+    controller_path = "app/controllers/#{@from_controller.underscore}.rb"
+    replace_in_file(controller_path, @from_action, @to)
     
-    views_for_action = "app/views/#{@from_resource_path}/#{action}.*"
+    views_for_action = "app/views/#{@from_resource_path}/#{@from_action}.*"
 
     Dir[views_for_action].each do |file|
       extension = file.split('.')[1..2].join('.')
