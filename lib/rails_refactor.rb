@@ -68,7 +68,11 @@ elsif ARGV[0] == "test"
 
     def setup
       raise "Run tests in 'dummy' rails project" if !Dir.pwd.end_with? "dummy"
+    end
+
+    def teardown
       `git checkout .`
+      `git clean -f`
       `rm -rf app/views/hello_world`
     end
 
