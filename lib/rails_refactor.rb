@@ -71,6 +71,7 @@ else
   class RailsRefactorTest < Test::Unit::TestCase
 
     def setup
+      raise "Run in dummy rails project" if !File.dirname(__FILE__).end_with? "dummy"
       `git checkout .`
       `rm -rf app/views/hello_world`
     end
