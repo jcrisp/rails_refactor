@@ -6,7 +6,7 @@ and save you time.
 Before using, recommend that you start from a clean repository state so 
 you can easily review changes.
 
-Put rails_refactor.rb on your PATH
+Put rails_refactor.rb on your PATH (it is in the lib directory).
 Change directory to the root of your rails project.
 
 To rename a controller:
@@ -25,7 +25,7 @@ To rename a controller action:
 * renames view files for all formats
 
 To run tests, move to 'dummy' rails project directory:
-  $ ../lib/rails_refactor.rb
+  $ ../lib/rails_refactor.rb test
 
 More refactorings coming soon... Please fork and contribute :-)
 

@@ -2,7 +2,7 @@
 # ./rails_refactor.rb rename DummyController HelloController 
 # ./rails_refactor.rb rename DummyController.my_action new_action
 
-require 'config/environment'
+#require 'config/environment'
 
 class Renamer
   def initialize(from, to)
@@ -66,12 +66,12 @@ if ARGV.length == 3
       renamer.controller_rename
     end
   end
-else
+elsif ARGV[0] == "test"
   require 'test/unit'
   class RailsRefactorTest < Test::Unit::TestCase
 
     def setup
-      raise "Run in dummy rails project" if !File.dirname(__FILE__).end_with? "dummy"
+      raise "Run tests in 'dummy' rails project" if !Dir.pwd.end_with? "dummy"
       `git checkout .`
       `rm -rf app/views/hello_world`
     end
@@ -123,4 +123,9 @@ else
 
     end
   end
+else
+  puts "Usage:"
+  puts "  rails_refactor.rb rename DummyController HelloController"
+  puts "  rails_refactor.rb rename DummyController.my_action new_action"
+  puts "  rails_refactor.rb test"
 end
