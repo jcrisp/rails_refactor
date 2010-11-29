@@ -13,10 +13,10 @@ To rename a controller:
   $ rails_refactor.rb rename OldController NewController 
 
 * renames controller file & class name in file
+* renames controller spec file & class name in file
 * renames view directory
 * renames helper file & module name in file
 * updates routes
-* TODO: update controller specs/tests
 
 To rename a controller action:
   $ rails_refactor.rb rename DummyController.old_action new_action

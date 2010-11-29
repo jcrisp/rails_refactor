@@ -27,6 +27,10 @@ class Renamer
     `mv app/controllers/#{@from.underscore}.rb #{to_controller_path}`
     replace_in_file(to_controller_path, @from, @to)
 
+    to_spec = "spec/controllers/#{to_resource_path}_controller_spec.rb"
+    `mv spec/controllers/#{@from.underscore}_spec.rb #{to_spec}`
+    replace_in_file(to_spec, @from, @to)
+
     `mv app/views/#{@from_resource_path} app/views/#{to_resource_path}`
 
     to_helper_path = "app/helpers/#{to_resource_path}_helper.rb"
@@ -109,9 +113,8 @@ elsif ARGV[0] == "test"
       assert File.exist?("app/views/hello_world/index.html.erb")
       assert !File.exist?("app/views/dummies/index.html.erb")
 
-      controller_contents = File.read("app/controllers/hello_world_controller.rb")
-      assert controller_contents.include?("HelloWorldController") 
-      assert !controller_contents.include?("DummiesController") 
+      assert_file_changed("app/controllers/hello_world_controller.rb", 
+                          "DummiesController", "HelloWorldController")
 
       routes_contents = File.read("config/routes.rb")
       assert routes_contents.include?("hello_world") 
@@ -121,6 +124,10 @@ elsif ARGV[0] == "test"
       assert helper_contents.include?("HelloWorldHelper") 
       assert !helper_contents.include?("DummiesHelper") 
 
+      assert File.exist?("spec/controllers/hello_world_controller_spec.rb")
+      assert !File.exist?("spec/controllers/dummies_controller_spec.rb")
+      assert_file_changed("spec/controllers/hello_world_controller_spec.rb", 
+                          "DummiesController", "HelloWorldController")
     end
   end
 else
