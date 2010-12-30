@@ -10,9 +10,13 @@ class Renamer
   end
 
   def model_rename
-    to_file = @to.underscore + ".rb"
-    `mv app/models/#{@from.underscore}.rb app/models/#{to_file}`
-    replace_in_file("app/models/#{to_file}", @from, @to)
+    to_model_file = @to.underscore + ".rb"
+    `mv app/models/#{@from.underscore}.rb app/models/#{to_model_file}`
+    replace_in_file("app/models/#{to_model_file}", @from, @to)
+
+    to_spec_file = @to.underscore + "_spec.rb"
+    `mv spec/models/#{@from.underscore}_spec.rb spec/models/#{to_spec_file}`
+    replace_in_file("spec/models/#{to_spec_file}", @from, @to)
   end
 
   def controller_rename
@@ -108,9 +112,15 @@ elsif ARGV[0] == "test"
 
     def test_model_rename
       rename("DummyModel", "NewModel")
+
       assert File.exist?("app/models/new_model.rb")
       assert !File.exist?("app/models/dummy_model.rb")
       assert_file_changed("app/models/new_model.rb", 
+                          "DummyModel", "NewModel")
+
+      assert File.exist?("spec/models/new_model_spec.rb")
+      assert !File.exist?("spec/models/dummy_model_spec.rb")
+      assert_file_changed("spec/models/new_model_spec.rb", 
                           "DummyModel", "NewModel")
 
     end
