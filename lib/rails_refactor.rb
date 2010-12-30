@@ -2,7 +2,7 @@
 # ./rails_refactor.rb rename DummyController HelloController 
 # ./rails_refactor.rb rename DummyController.my_action new_action
 
-require 'config/environment'
+require './config/environment.rb'
 
 class Renamer
   def initialize(from, to)
