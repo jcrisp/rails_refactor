@@ -15,6 +15,14 @@ class Renamer
     to_spec_file = @to.underscore + "_spec.rb"
     `mv spec/models/#{@from.underscore}_spec.rb spec/models/#{to_spec_file}`
     replace_in_file("spec/models/#{to_spec_file}", @from, @to)
+
+    Dir["db/migrate/*_create_#{@from.underscore.pluralize}.rb"].each do |file|
+      timestamp_and_path = file.split('_')[0]
+      to_migration_path = "#{timestamp_and_path}_create_#{@to.underscore.pluralize}.rb"
+      `mv #{file} #{to_migration_path}`
+      replace_in_file(to_migration_path, "Create#{@from.pluralize}", "Create#{@to.pluralize}")
+      replace_in_file(to_migration_path, @from.underscore.pluralize, @to.underscore.pluralize)
+    end
   end
 
   def controller_rename
@@ -50,8 +58,7 @@ class Renamer
 
     Dir[views_for_action].each do |file|
       extension = file.split('.')[1..2].join('.')
-      cmd = "mv #{file} app/views/#{@from_resource_path}/#{@to}.#{extension}"
-      `#{cmd}`
+      `mv #{file} app/views/#{@from_resource_path}/#{@to}.#{extension}`
     end
   end
 
@@ -121,40 +128,45 @@ elsif ARGV[0] == "test"
       assert_file_changed("spec/models/new_model_spec.rb", 
                           "DummyModel", "NewModel")
 
+      assert File.exist?("db/migrate/20101230081247_create_new_models.rb")
+      assert !File.exist?("db/migrate/20101230081247_create_dummy_models.rb")
+      assert_file_changed("db/migrate/20101230081247_create_new_models.rb",
+                          "CreateDummyModels", "CreateNewModels")
+      assert_file_changed("db/migrate/20101230081247_create_new_models.rb",
+                          ":dummy_models", ":new_models")
     end
 
-#    def test_controller_action_rename
-#      rename('DummiesController.index', 'new_action')
-#      assert_file_changed("app/controllers/dummies_controller.rb", "index", "new_action")
-#      assert File.exists?("app/views/dummies/new_action.html.erb")
-#      assert !File.exists?("app/views/dummies/index.html.erb")
-#    end
-#
-#    def test_controller_rename
-#      rename("DummiesController", "HelloWorldController")
-#      assert File.exist?("app/controllers/hello_world_controller.rb")
-#      assert !File.exist?("app/controllers/dummies_controller.rb")
-#
-#      assert File.exist?("app/views/hello_world/index.html.erb")
-#      assert !File.exist?("app/views/dummies/index.html.erb")
-#
-#      assert_file_changed("app/controllers/hello_world_controller.rb", 
-#                          "DummiesController", "HelloWorldController")
-#
-#      routes_contents = File.read("config/routes.rb")
-#      assert routes_contents.include?("hello_world") 
-#      assert !routes_contents.include?("dummies") 
-#
-#      helper_contents = File.read("app/helpers/hello_world_helper.rb")
-#      assert helper_contents.include?("HelloWorldHelper") 
-#      assert !helper_contents.include?("DummiesHelper") 
-#
-#      assert File.exist?("spec/controllers/hello_world_controller_spec.rb")
-#      assert !File.exist?("spec/controllers/dummies_controller_spec.rb")
-#      assert_file_changed("spec/controllers/hello_world_controller_spec.rb", 
-#                          "DummiesController", "HelloWorldController")
-#    end
-#
+    def test_controller_action_rename
+      rename('DummiesController.index', 'new_action')
+      assert_file_changed("app/controllers/dummies_controller.rb", "index", "new_action")
+      assert File.exists?("app/views/dummies/new_action.html.erb")
+      assert !File.exists?("app/views/dummies/index.html.erb")
+    end
+
+    def test_controller_rename
+      rename("DummiesController", "HelloWorldController")
+      assert File.exist?("app/controllers/hello_world_controller.rb")
+      assert !File.exist?("app/controllers/dummies_controller.rb")
+
+      assert File.exist?("app/views/hello_world/index.html.erb")
+      assert !File.exist?("app/views/dummies/index.html.erb")
+
+      assert_file_changed("app/controllers/hello_world_controller.rb", 
+                          "DummiesController", "HelloWorldController")
+
+      routes_contents = File.read("config/routes.rb")
+      assert routes_contents.include?("hello_world") 
+      assert !routes_contents.include?("dummies") 
+
+      helper_contents = File.read("app/helpers/hello_world_helper.rb")
+      assert helper_contents.include?("HelloWorldHelper") 
+      assert !helper_contents.include?("DummiesHelper") 
+
+      assert File.exist?("spec/controllers/hello_world_controller_spec.rb")
+      assert !File.exist?("spec/controllers/dummies_controller_spec.rb")
+      assert_file_changed("spec/controllers/hello_world_controller_spec.rb", 
+                          "DummiesController", "HelloWorldController")
+    end
   end
 else
   puts "Usage:"
