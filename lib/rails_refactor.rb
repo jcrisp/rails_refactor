@@ -1,6 +1,4 @@
 #!/usr/bin/env ruby
-# ./rails_refactor.rb rename DummyController HelloController 
-# ./rails_refactor.rb rename DummyController.my_action new_action
 
 require './config/environment.rb'
 
