@@ -4,6 +4,7 @@ begin
   require './config/environment.rb'
 rescue LoadError
   puts "*** rails_refactor needs to be run from the root of a Rails 3 webapp ***"
+  exit
 end
 
 class Renamer
