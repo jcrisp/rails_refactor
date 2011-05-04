@@ -175,8 +175,7 @@ elsif ARGV[0] == "test"
   end
 else
   puts "Usage:"
-  puts "  rails_refactor.rb rename DummyController NewController"
-  puts "  rails_refactor.rb rename DummyController.my_action new_action"
-  puts "  rails_refactor.rb rename DummyModel NewModel"
-  puts "  rails_refactor.rb test"
+  puts "  rails_refactor rename DummyController NewController"
+  puts "  rails_refactor rename DummyController.my_action new_action"
+  puts "  rails_refactor rename DummyModel NewModel"
 end
