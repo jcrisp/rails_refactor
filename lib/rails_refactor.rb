@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
+require 'active_support/inflector'
+require 'active_support/core_ext/string/inflections'
 
 begin
-  require './config/environment.rb'
+  File.exist? './config/environment.rb'
 rescue LoadError
   puts "*** rails_refactor needs to be run from the root of a Rails 3 webapp ***"
   exit
