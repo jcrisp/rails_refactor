@@ -134,19 +134,19 @@ elsif ARGV[0] == "test"
       assert File.exist?("app/models/new_model.rb")
       assert !File.exist?("app/models/dummy_model.rb")
       assert_file_changed("app/models/new_model.rb",
-      "DummyModel", "NewModel")
+                          "DummyModel", "NewModel")
 
       assert File.exist?("spec/models/new_model_spec.rb")
       assert !File.exist?("spec/models/dummy_model_spec.rb")
       assert_file_changed("spec/models/new_model_spec.rb",
-      "DummyModel", "NewModel")
+                          "DummyModel", "NewModel")
 
       assert File.exist?("db/migrate/20101230081247_create_new_models.rb")
       assert !File.exist?("db/migrate/20101230081247_create_dummy_models.rb")
       assert_file_changed("db/migrate/20101230081247_create_new_models.rb",
-      "CreateDummyModels", "CreateNewModels")
+                          "CreateDummyModels", "CreateNewModels")
       assert_file_changed("db/migrate/20101230081247_create_new_models.rb",
-      ":dummy_models", ":new_models")
+                          ":dummy_models", ":new_models")
     end
 
     def test_controller_action_rename
@@ -165,7 +165,7 @@ elsif ARGV[0] == "test"
       assert !File.exist?("app/views/dummies/index.html.erb")
 
       assert_file_changed("app/controllers/hello_world_controller.rb",
-      "DummiesController", "HelloWorldController")
+                          "DummiesController", "HelloWorldController")
 
       routes_contents = File.read("config/routes.rb")
       assert routes_contents.include?("hello_world")
@@ -178,7 +178,7 @@ elsif ARGV[0] == "test"
       assert File.exist?("spec/controllers/hello_world_controller_spec.rb")
       assert !File.exist?("spec/controllers/dummies_controller_spec.rb")
       assert_file_changed("spec/controllers/hello_world_controller_spec.rb",
-      "DummiesController", "HelloWorldController")
+                          "DummiesController", "HelloWorldController")
     end
   end
 else
