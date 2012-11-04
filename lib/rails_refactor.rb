@@ -181,7 +181,7 @@ elsif ARGV[0] == "test"
                           "DummiesController", "HelloWorldController")
     end
   end
-else
+elsif ARGV[0] == '-h'
   puts "Usage:"
   puts "  rails_refactor rename DummyController NewController"
   puts "  rails_refactor rename DummyController.my_action new_action"
