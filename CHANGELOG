@@ -1,3 +1,4 @@
+v1.3. Support for rails_refactor to be put in your Gemfile
 v1.2. Speed improvements and more robust with missing files (thanks Tricon)
 v1.1. Updating README and usage information
 v1.0. first version as a gem, thanks Andys!
