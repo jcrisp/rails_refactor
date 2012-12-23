@@ -57,4 +57,4 @@ dummy/test/functional/dummies_controller_test.rb
 dummy/test/performance/browsing_test.rb
 dummy/test/test_helper.rb
 dummy/test/unit/helpers/dummies_helper_test.rb
-lib/rails_refactor.rb
+bin/rails_refactor.rb
