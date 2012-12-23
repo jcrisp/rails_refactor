@@ -1,2 +1,2 @@
 #!/usr/bin/env ruby
-load(File.dirname(__FILE__) + "/../lib/rails_refactor.rb")
+load(File.dirname(__FILE__) + "/rails_refactor.rb")
