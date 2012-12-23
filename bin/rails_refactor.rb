@@ -119,7 +119,7 @@ elsif ARGV[0] == "test"
     end
 
     def rename(from, to)
-      `../lib/rails_refactor.rb rename #{from} #{to}`
+      `../bin/rails_refactor.rb rename #{from} #{to}`
     end
 
     def assert_file_changed(path, from, to)
