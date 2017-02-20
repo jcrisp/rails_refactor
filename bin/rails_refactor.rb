@@ -141,11 +141,12 @@ elsif ARGV[0] == "test"
       assert_file_changed("spec/models/new_model_spec.rb",
                           "DummyModel", "NewModel")
 
-      assert File.exist?("db/migrate/20101230081247_create_new_models.rb")
-      assert !File.exist?("db/migrate/20101230081247_create_dummy_models.rb")
-      assert_file_changed("db/migrate/20101230081247_create_new_models.rb",
-                          "CreateDummyModels", "CreateNewModels")
-      assert_file_changed("db/migrate/20101230081247_create_new_models.rb",
+      raise `ls db/migrate`
+      assert File.exist?("db/migrate/20170214234158_create_new_models.rb")
+      assert !File.exist?("db/migrate/20170214234158_create_dummy_models.rb")
+      assert_file_changed("db/migrate/20170214234158_create_new_models.rb",
+                          "CreateDummies", "CreateNewModels")
+      assert_file_changed("db/migrate/20170214234158_create_new_models.rb",
                           ":dummy_models", ":new_models")
     end
 
