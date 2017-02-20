@@ -105,8 +105,8 @@ if ARGV.length == 3
     end
   end
 elsif ARGV[0] == "test"
-  require 'test/unit'
-  class RailsRefactorTest < Test::Unit::TestCase
+  require "minitest/autorun"
+  class RailsRefactorTest < Minitest::Test
 
     def setup
       raise "Run tests in 'dummy' rails project" if !Dir.pwd.end_with? "dummy"
