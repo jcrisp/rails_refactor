@@ -1,0 +1,3 @@
+Bump version in rails_refactor.gemspec
+gem build rails_refactor.gemspec
+gem push rails_refactor-x.y.z.gem
