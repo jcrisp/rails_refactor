@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'rails_refactor'
-  s.version     = '1.4.2'
+  s.version     = '1.4.3'
   s.date        = '2018-04-03'
   s.summary     = "Command line refactoring tool for Rails projects"
   s.description = "Command line tool for simple refactors like rename model and controller for Rails projects"
