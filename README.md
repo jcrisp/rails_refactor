@@ -1,5 +1,6 @@
 RAILS REFACTOR
 --------------
+
 Basic renames and refactorings for rails projects.
 Although these are not perfect, they'll do a lot of the work for you 
 and save you time. 
@@ -8,12 +9,14 @@ Before using, recommend that you start from a clean repository state so
 you can easily review changes.
 
 To install:
-  gem install rails_refactor
+
+    gem install rails_refactor
 
 Before use, make sure you cd to the root of your rails project.
 
 To rename a controller:
-  $ rails_refactor rename OldController NewController 
+
+    $ rails_refactor rename OldController NewController 
 
 * renames controller file & class name in file
 * renames controller spec file & class name in file
