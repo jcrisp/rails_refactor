@@ -25,13 +25,15 @@ To rename a controller:
 * updates routes
 
 To rename a controller action:
-  $ rails_refactor rename DummyController.old_action new_action
+
+    $ rails_refactor rename DummyController.old_action new_action
 
 * renames controller action in controller class file
 * renames view files for all formats
 
 To rename a model:
-  $ rails_refactor rename OldModel NewModel
+
+    $ rails_refactor rename OldModel NewModel
 
 * renames model file & class name in file
 * renames spec file & class name in file
