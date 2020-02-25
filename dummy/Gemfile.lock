@@ -76,7 +76,7 @@ GEM
     mini_portile2 (2.4.0)
     minitest (5.10.1)
     multi_json (1.12.1)
-    nokogiri (1.10.5)
+    nokogiri (1.10.8)
       mini_portile2 (~> 2.4.0)
     rack (1.6.12)
     rack-test (0.6.3)
