@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'rails_refactor'
-  s.version     = '1.4.5'
-  s.date        = '2019-11-09'
+  s.version     = '1.4.6'
+  s.date        = '2020-03-02'
   s.summary     = "Command line refactoring tool for Rails projects"
   s.description = "Command line tool for simple refactors like rename model and controller for Rails projects"
   s.authors     = ["James Crisp", "Ryan Bigg"]
